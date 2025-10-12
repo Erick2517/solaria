@@ -1,0 +1,13 @@
+
+# Archivos de configuración del entorno
+.env
+.env.local
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
