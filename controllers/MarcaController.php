@@ -13,5 +13,6 @@ class MarcaController {
 
     public function listarMarcas() {
         $marcas = $this->marcaModel->verMarcas();
+        require_once("views/prueba-1.php");
     }
 }
