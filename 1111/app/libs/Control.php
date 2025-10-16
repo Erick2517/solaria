@@ -6,13 +6,30 @@
  * y el tercer y posteriores son los parametros que se pasan
  */
  class Control
-{
+ {
+
+    protected $controlador="Login";
+    protected $metodo= "caratula";
+    protected $parametros = [];
+
     function __construct()
+
     {
         $url=$this->separarURL();
-        var_dump($url);
+        /* var_dump($url); */
+        if($url !="" && file_exists("../app/controllers/".ucwords($url[0]).".php")){
+            $this->controlador=ucwords($url[0]);
+            unset($url[0]);
+            var_dump($url);
+
+        }
+        //instanciando la clase del controlador
+        require_once("../app/controllers/".ucwords($this->controlador).".php");
+        //instanciando la clase
+        $this->controlador=new $this->controlador;
 
     }
+
     function separarURL(){
         $url= "";
         if(isset($_GET["url"])){
