@@ -13,7 +13,6 @@
     protected $parametros = [];
 
     function __construct()
-
     {
         $url=$this->separarURL();
         /* var_dump($url); */
@@ -27,6 +26,16 @@
         require_once("../app/controllers/".ucwords($this->controlador).".php");
         //instanciando la clase
         $this->controlador=new $this->controlador;
+        if(isset($url[1])){
+            if(method_exists($this->controlador, $url[1])){
+                $this->metodo=$url[1];
+                unset($url[1]);
+
+            }
+        }
+        $this->parametros=$url;
+        print "<br>"."metodo: ".$this->metodo.".<br>";
+        var_dump($this->parametros);
 
     }
 
