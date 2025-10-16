@@ -10,8 +10,8 @@ class Controlador{
     }
 
     public function vista($vista, $datos=[]){
-        if(file_exists("../app/vistas/".$vista.".php")){
-            require_once("../app/vistas/".$vista.".php");
+        if(file_exists("../app/views/".$vista.".php")){//tener cudado con el nombre de carpetas
+            require_once("../app/views/".$vista.".php");
         }else{
             die("la bista no eciste");
         }
