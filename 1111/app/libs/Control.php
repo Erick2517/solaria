@@ -33,7 +33,8 @@
 
             }
         }
-        $this->parametros=$url;
+        $this->parametros=$url ? array_values($url):[];
+        call_user_func_array([$this->controlador,$this->metodo],$this->parametros);
         print "<br>"."metodo: ".$this->metodo.".<br>";
         var_dump($this->parametros);
 
