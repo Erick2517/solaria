@@ -14,9 +14,6 @@ class MarcaController {
 
     public function listarMarcas() {
         $marcas = $this->marcaModel->verMarcas();
-<<<<<<< HEAD
-        require_once("views/prueba-1.php");
-=======
         require_once(VIEWS_PATH.'marcas/panelMarcas.php');
     }
 
@@ -28,6 +25,5 @@ class MarcaController {
         } else {
             echo "Marca no encontrada.";
         }*/
->>>>>>> master
     }
 }
