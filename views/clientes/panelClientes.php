@@ -1,8 +1,12 @@
 <?php
-// el header que lo estamos reutilizando
 require_once(VIEWS_PATH."layout/header.php");
 ?>
-
+<!-- <a href="views/formCrearCliente">INSERTAR</a> -->
+<div class="mb-3">
+    <a href="<?php echo BASE_URL; ?>cliente/mostrarFormularioInsertar" class="btn btn-primary">
+        + Crear Nuevo Cliente
+    </a>
+</div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <thead class="table-dark">
