@@ -4,6 +4,23 @@
         <li><a href="<?php echo BASE_URL; ?>marca/listarMarcas">Marcas</a></li>
         <li><a href="<?php echo BASE_URL; ?>views/categorias/panelCategorias.php">Categorias</a></li>
         <!--li><a href="<?php echo BASE_URL; ?>views/categorias/panelCategorias.php">Categorias</a></li-->
-        <li><a href="<?php echo BASE_URL; ?>instalacions/panelInstalaciones">Instalaciones</a></li><!--instalacion se refiere al controlador--><!---->
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+        <!--elementos li relacionados con la tabla de sinstalaciones, clientes, instalacionestecnicos-->
+        <li><a href="<?php echo BASE_URL; ?>instalacion/panelInstalaciones">Instalaciones</a></li><!--instalacion se refiere al controlador--><!---->
+        <li><a href="<?php echo BASE_URL;?>cliente/mostrarPanelClientes">Clientes</a></li>        
     </ul>
 </nav>
