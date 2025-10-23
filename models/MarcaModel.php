@@ -19,6 +19,7 @@ class MarcaModel extends Conexion {
         }catch(Exception $e){
             echo "Error al obtener las marcas: " . $e->getMessage();
             return [];
+            
         }
     }
 

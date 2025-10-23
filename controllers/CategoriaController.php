@@ -9,7 +9,7 @@ class CategoriaController {
     }
 
     public function listarCategorias() {
-        $categorias = $this->CategoriaModel->verCategorias();
+        $categorias = $this->categoriaModel->verCategorias();
         require_once(VIEWS_PATH.'categorias/panelCategorias.php');
     }
 }
