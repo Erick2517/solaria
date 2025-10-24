@@ -90,7 +90,5 @@
     </header>
 
     <div class="dashboard-container">
-
         <?php require_once(VIEWS_PATH . 'layout/sidebar.php'); ?>
-
         <main class="content">

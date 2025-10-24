@@ -1,7 +1,9 @@
 <?php
 // views/layout/footer.php
 ?>
-        </main> </div> <footer class="footer">
+         </main> 
+    </div> 
+    <footer class="footer">
         <p>&copy; 2025 Solaria. Todos los derechos reservados.</p>
         <p>Contacto: info@solaria.com</p>
     </footer>
