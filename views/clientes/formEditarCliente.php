@@ -1,21 +1,17 @@
-<!-- //autor: José García
-//fecha de última modificación: 21/10/2025
-//descripcion: formulario vista para editar un cliente -->
 <?php
 require_once(VIEWS_PATH.'layout/header.php');
+
 $cliente = $data['cliente']; 
-$nombres = $data['anteriores']['nombres'] ?? $cliente['nombres'];
-$apellidos = $data['anteriores']['apellidos'] ?? $cliente['apellidos'];
+$nombres = $data['anteriores']['nombres'] ?? ($data['clienteUsuario']['nombres'] ?? '');
+$apellidos = $data['anteriores']['apellidos'] ?? ($data['clienteUsuario']['apellidos'] ?? '');
 $numDocumento = $data['anteriores']['numDocumentoId'] ?? $cliente['numDocumentoId'];
 $presupuesto = $data['anteriores']['presupuestoDisp'] ?? $cliente['presupuestoDisp'];
-//el username viene del JOIN
-$username = $data['anteriores']['username'] ?? $cliente['username']; 
+$username = $data['anteriores']['username'] ?? ($data['clienteUsuario']['username'] ?? '');
 ?>
 
 <h1 class="mb-4"><?php echo $data['titulo']; ?></h1>
 
 <?php
-// --- Mostrar error---
 if (isset($data['mensaje'])) {
     echo "<div class='alert alert-danger' role='alert'>{$data['mensaje']}</div>";
 }
@@ -23,7 +19,6 @@ if (isset($data['mensaje'])) {
 
 <div class="card-form">
     <form action="<?php echo BASE_URL; ?>cliente/actualizar" method="POST">
-        
         <input type="hidden" name="clienteId" value="<?php echo $cliente['clienteId']; ?>">
 
         <div class="row">
@@ -44,7 +39,7 @@ if (isset($data['mensaje'])) {
                            value="<?php echo htmlspecialchars($numDocumento); ?>" required>
                 </div>
             </div>
-            
+
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="presupuestoDisp" class="form-label">Presupuesto Disponible *</label>
@@ -52,19 +47,18 @@ if (isset($data['mensaje'])) {
                            value="<?php echo htmlspecialchars($presupuesto); ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="username" class="form-label">digite el username del Usuario a Vincular *</label>
+                    <label for="username" class="form-label">Username del Usuario a Vincular *</label>
                     <input type="text" class="form-control" id="username" name="username" 
                            value="<?php echo htmlspecialchars($username); ?>" required>
-                    <small class="form-text text-muted">El 'username' debe existir en la tabla de usuarios.</small>
+                    <small class="form-text text-muted">El username debe existir en la tabla de usuarios.</small>
                 </div>
             </div>
         </div>
-        
+
         <div class="mt-3">
             <button type="submit" class="btn btn-success">Actualizar Cliente</button>
             <a href="<?php echo BASE_URL; ?>cliente/mostrarPanelClientes" class="btn btn-secondary">Volver al panel</a>
         </div>
-        
     </form>
 </div>
 

@@ -119,14 +119,10 @@ public function insertarCliente($nombres, $apellidos, $numDocumentoId, $presupue
         }
     }
 
-    /**
-     * Actualiza un cliente buscando el ID con ayuda del username.
-     */
     public function actualizarCliente($clienteId, $nombres, $apellidos, $numDocumentoId, $presupuestoDisp, $username) {
-        
         $this->conexion->beginTransaction();
         try {
-            //buscar el usuarioId usando el username
+            // Buscar usuarioId por username
             $sqlUser = "SELECT usuarioId FROM usuarios WHERE username = ?";
             $cmdUser = $this->conexion->prepare($sqlUser);
             $cmdUser->execute([$username]);
@@ -137,14 +133,23 @@ public function insertarCliente($nombres, $apellidos, $numDocumentoId, $presupue
                 return "Error: El 'username' ({$username}) no fue encontrado.";
             }
             $usuarioId = $usuario['usuarioId'];
+
+            // Primero actualizar nombres y apellidos en la tabla usuarios
+            require_once('UsuarioModel.php');
+            $usuarioModel = new UsuarioModel();
+            $edicionUsuario = $usuarioModel->editarUsuarioPorID($usuarioId, $nombres, $apellidos);
+            if ($edicionUsuario !== true) {
+                $this->conexion->rollBack();
+                return $edicionUsuario ?: "Error al actualizar los datos del usuario.";
+            }
+
+            // Luego actualizar datos en tabla clientes
             $sql = "UPDATE {$this->tabla} 
-                    SET nombres = ?, apellidos = ?, numDocumentoId = ?, 
-                        presupuestoDisp = ?, usuarioId = ?
+                    SET numDocumentoId = ?, presupuestoDisp = ?, usuarioId = ?
                     WHERE clienteId = ?";
-            
             $cmd = $this->conexion->prepare($sql);
-            $cmd->execute([$nombres, $apellidos, $numDocumentoId, $presupuestoDisp, $usuarioId, $clienteId]);
-            
+            $cmd->execute([$numDocumentoId, $presupuestoDisp, $usuarioId, $clienteId]);
+
             $this->conexion->commit();
             return true;
 
@@ -154,6 +159,7 @@ public function insertarCliente($nombres, $apellidos, $numDocumentoId, $presupue
             return "Error DB al intentar actualizar.";
         }
     }
+
 
 }
 ?>

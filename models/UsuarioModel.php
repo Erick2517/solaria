@@ -33,4 +33,17 @@ class UsuarioModel extends Conexion {
         }
     }
 
+    public function obtenerUsuarioPorId($usuarioId) {
+    try {
+        $sql = "SELECT * FROM usuarios WHERE usuarioId = ?";
+        $cmd = $this->conexion->prepare($sql);
+        $cmd->execute([$usuarioId]);
+        return $cmd->fetch(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        error_log("Error al obtener usuario por ID: " . $e->getMessage());
+        return false;
+    }
+}
+
+
 }
