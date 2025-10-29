@@ -23,6 +23,7 @@
 
         <!--elementos li relacionados con la tabla de sinstalaciones, clientes, instalacionestecnicos-->
         <li><a href="<?php echo BASE_URL; ?>instalacion/panelInstalaciones">Instalaciones</a></li><!--instalacion se refiere al controlador--><!---->
+                <li><a href="<?php echo BASE_URL; ?>instalacion/mostrarMiInstalacion">Instal</a></li><!--instalacion se refiere al controlador--><!---->
         <li><a href="<?php echo BASE_URL;?>cliente/mostrarPanelClientes">Clientes</a></li>        
     </ul>
 </nav>

@@ -1,3 +1,9 @@
+<a href="<?php echo BASE_URL; ?>cliente/mostrarFormularioInsertar" 
+   class="btn btn-success mb-3" 
+   style="background-color: #24c16c; border-color: #24c16c; border-radius: 10px; font-size: 1.14em; font-weight: 500;">
+    + Nuevo
+</a>
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <thead class="table-dark">

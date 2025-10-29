@@ -1,0 +1,49 @@
+.contenedor-tabla {
+    margin: 30px;
+}
+
+.tabla-mi-estilo {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 7px #ccc;
+}
+
+.tabla-mi-estilo th, .tabla-mi-estilo td {
+    border: 1px solid #bbb;
+    padding: 0.7em 1em;
+    text-align: center;
+}
+
+.tabla-mi-estilo thead {
+    background: #292929;
+    color: #fff;
+    font-weight: bold;
+}
+
+.tabla-mi-estilo tr:nth-child(even) {
+    background: #f0f4fa;
+}
+
+/* Badges de estado */
+.badge-estado {
+    display: inline-block;
+    padding: 0.22em 0.8em;
+    font-size: 0.98em;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.badge-completada        { background: #24c16c; }
+.badge-pendiente         { background: #e8c12b; color: #4a3d00; }
+.badge-cancelada         { background: #e24c4c; }
+.badge-enprogreso        { background: #1ca1b8; }
+
+@media (max-width: 700px) {
+    .tabla-mi-estilo, .tabla-mi-estilo thead, .tabla-mi-estilo tbody, .tabla-mi-estilo th, .tabla-mi-estilo td, .tabla-mi-estilo tr {
+        display: block;
+    }
+    .tabla-mi-estilo th, .tabla-mi-estilo td {
+        padding: 0.5em 0.5em;
+    }
+}

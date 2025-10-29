@@ -30,7 +30,7 @@ class ClienteModel extends Conexion {
     public function verClientes() {
         try {
             //se usa join para unir clientes con usuarios, osea para llamar info de varias tablas
-            $sql = "SELECT c.clienteId,c.nombres, c.apellidos,c.numDocumentoId,c.presupuestoDisp,
+            $sql = "SELECT c.clienteId,u.nombres, u.apellidos,c.numDocumentoId,c.presupuestoDisp,
                         u.email,
                         u.telefonoContacto 
                     FROM clientes AS c
@@ -47,43 +47,57 @@ class ClienteModel extends Conexion {
         }
     }
 
-/**
-     * Inserta un nuevo cliente vinculado a un "usuario" que ya existe
-     * @return bool|string Devuelve 'true' si todo bien o un error
-     */
-    public function insertarCliente($nombres, $apellidos, $numDocumentoId, $presupuestoDisp, $username) {
-        $this->conexion->beginTransaction();
-        
-        try {
-            //buscar el usuarioId usando el username
-            $sqlUser = "SELECT usuarioId FROM usuarios WHERE username = ?";
-            $cmdUser = $this->conexion->prepare($sqlUser);
-            $cmdUser->execute([$username]);
-            $usuario = $cmdUser->fetch(PDO::FETCH_ASSOC);
+public function insertarCliente($nombres, $apellidos, $numDocumentoId, $presupuestoDisp, $username) {
+    $this->conexion->beginTransaction();
 
-            //buscar si el usuario existe
-            if (!$usuario) {
-                $this->conexion->rollBack();
-                return "Error: El 'username' ({$username}) no fue encontrado.";
-            }
+    try {
+        // 1. Buscar usuarioId a partir del username
+        $sqlUser = "SELECT usuarioId FROM usuarios WHERE username = ?";
+        $cmdUser = $this->conexion->prepare($sqlUser);
+        $cmdUser->execute([$username]);
+        $usuario = $cmdUser->fetch(PDO::FETCH_ASSOC);
 
-            $usuarioId = $usuario['usuarioId'];
-            $sqlInsert = "INSERT INTO {$this->tabla} 
-                          (usuarioId, nombres, apellidos, numDocumentoId, presupuestoDisp) 
-                          VALUES (?, ?, ?, ?, ?)";
-            
-            $cmdInsert = $this->conexion->prepare($sqlInsert);
-            //debe ser en este orden
-            $cmdInsert->execute([$usuarioId, $nombres, $apellidos, $numDocumentoId, $presupuestoDisp]);
-            $this->conexion->commit();
-            return true;
-
-        } catch(PDOException $e) {
+        if (!$usuario) {
             $this->conexion->rollBack();
-            error_log("Error al insertar cliente: " . $e->getMessage());
-            return "Error de base de datos al intentar crear el cliente."; // Falla
+            return "Error: El nombre de usuario '{$username}' no existe.";
         }
+
+        $usuarioId = $usuario['usuarioId'];
+
+        // 2. Validar que NO tenga ya un cliente relacionado
+        $sqlCheck = "SELECT clienteId FROM clientes WHERE usuarioId = ?";
+        $cmdCheck = $this->conexion->prepare($sqlCheck);
+        $cmdCheck->execute([$usuarioId]);
+        if ($cmdCheck->fetch(PDO::FETCH_ASSOC)) {
+            $this->conexion->rollBack();
+            return "Error: El usuario '{$username}' ya está asignado a un cliente.";
+        }
+
+        // 3. Actualizar nombres y apellidos directamente en la tabla usuarios
+        require_once('UsuarioModel.php');
+        $usuarioModel = new UsuarioModel();
+        $edicion = $usuarioModel->editarUsuarioPorID($usuarioId, $nombres, $apellidos);
+        if ($edicion !== true) {
+            $this->conexion->rollBack();
+            return $edicion ?: "Error al actualizar los datos de usuario.";
+        }
+
+        // 4. Insertar el nuevo cliente
+        $sqlInsert = "INSERT INTO clientes (usuarioId, numDocumentoId, presupuestoDisp) VALUES (?, ?, ?)";
+        $cmdInsert = $this->conexion->prepare($sqlInsert);
+        $cmdInsert->execute([$usuarioId, $numDocumentoId, $presupuestoDisp]);
+
+        $this->conexion->commit();
+        return true;
+
+    } catch(PDOException $e) {
+        $this->conexion->rollBack();
+        error_log("Error al insertar cliente: " . $e->getMessage());
+        return "Error de base de datos al intentar crear el cliente.";
     }
+}
+
+
 /**
      * Obtiene los datos de un cliente, un id se necesita
      */

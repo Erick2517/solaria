@@ -4,11 +4,14 @@
 //descripcion: Controlador para manejar los usuarios
 // los archivos
 require_once('models/ClienteModel.php');
+require_once('models/InstalacionModel.php');
+require_once('models/UsuarioModel.php');
 // Para que se pueda usar VIEWS_PATH y redirect()
 require_once('helpers/config.php'); 
 class ClienteController {
     
     private $clienteModel;
+    private $instalacionModel;
 
     /**
      * Constructor para instanciar el modelo
@@ -18,6 +21,7 @@ class ClienteController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+        $this->instalacionModel=new InstalacionModel();
         $this->clienteModel = new ClienteModel();
     }
 
@@ -28,6 +32,9 @@ class ClienteController {
     public function mostrarPanelClientes() {
         //pedimos los datos (osea la lista) al modelo
         $data['clientes'] = $this->clienteModel->verClientes();
+        /* $data['instalaciones']=$this->instalacionModel->obtenerTodas(); */
+        $data['instalaciones']=$this->instalacionModel->obtenerInstalacionesConTecnico();
+        
         $data['titulo'] = "Panel de Clientesss";
 
         if (isset($_SESSION['mensaje'])) {
@@ -92,20 +99,39 @@ class ClienteController {
             redirect("cliente/mostrarFormularioInsertar");
         }
     }
-    /**
-     * muestra el formulario para editar un cliente
-     */
-    public function mostrarFormularioEditar($id) {
-        $data['cliente'] = $this->clienteModel->obtenerClientePorId($id);
+public function mostrarFormularioEditar($clienteId) {
+    // Cargar modelo cliente y usuario
+    $clienteModel = new ClienteModel();
+    $usuarioModel = new UsuarioModel();
 
-        if ($data['cliente']) {
-            $data['titulo'] = "Editar cliente";
-            require_once(VIEWS_PATH . 'clientes/formEditarCliente.php');
-        } else {
-            $_SESSION['mensaje'] = "cliente no encontrado";
-            redirect("cliente/mostrarPanelClientes");
-        }
+    // Obtener datos del cliente
+    $cliente = $clienteModel->obtenerClientePorId($clienteId);
+
+    if (!$cliente) {
+        // Manejar error, cliente no existe
+        $data['mensaje'] = "Cliente no encontrado.";
+        require_once VIEWS_PATH . 'error.php';
+        return;
     }
+
+    // Obtener datos de usuario relacionados (nombres, apellidos, username)
+    $usuario = $usuarioModel->obtenerUsuarioPorId($cliente['usuarioId']);
+
+    $data['cliente'] = $cliente;
+    $data['clienteUsuario'] = $usuario;
+
+    // Si hubo intento de edición fallida, puede haber 'anteriores' con valores para rellenar el formulario
+    if (isset($_SESSION['datos_anteriores'])) {
+        $data['anteriores'] = $_SESSION['datos_anteriores'];
+        unset($_SESSION['datos_anteriores']);
+    }
+
+    $data['titulo'] = "Editar Cliente";
+
+    // Cargar la vista con los datos
+    require_once VIEWS_PATH . 'clientes/formEditarCliente.php';
+}
+
 
     /**
      * metodo update, permite actualizar la info de clientes
