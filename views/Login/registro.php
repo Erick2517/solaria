@@ -14,7 +14,9 @@ $roles = $model->obtenerRoles();
 <div class="container mt-5">
     <div class="card mx-auto shadow p-4" style="max-width:500px;">
         <h3 class="text-center">Crear Cuenta</h3>
-        <form action="/solaria/login/guardarRegistro" method="POST">
+
+        <form action="<?php echo BASE_URL; ?>login/guardarRegistro" method="POST">
+
             <div class="mb-3">
                 <label>Usuario</label>
                 <input type="text" name="username" class="form-control" required>

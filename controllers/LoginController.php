@@ -16,28 +16,38 @@ class LoginController {
     public function registro() {
         require_once 'views/login/registro.php';
     }
+public function validar() {
+    $username = $_POST['username'];
+    $pass = $_POST['pass'];
 
-    public function validar() {
-        $username = $_POST['username'];
-        $pass = $_POST['pass'];
+    $usuario = $this->model->verificarUsuario($username);
 
-        $usuario = $this->model->verificarUsuario($username);
+    if ($usuario && password_verify($pass, $usuario['pass'])) {
+        // Iniciar sesión
+        session_start();
+        $_SESSION['usuarioId'] = $usuario['usuarioId'];
+        $_SESSION['username'] = $usuario['username'];
+        $_SESSION['rol'] = $usuario['rolName'];
 
-        if ($usuario && password_verify($pass, $usuario['pass'])) {
-            $_SESSION['usuarioId'] = $usuario['usuarioId'];
-            $_SESSION['username'] = $usuario['username'];
-            $_SESSION['rol'] = $usuario['rolName'];
-
-            if ($usuario['rolName'] == 'Admin') {
-                header('Location: /solaria/login/panelAdmin');
-            } else {
-                header('Location: /solaria/login/panelVendedor');
-            }
+        // Redirección según rol
+        if ($usuario['rolName'] == 'Admin') {
+            header('Location: /Solaria/login/panelAdmin');
         } else {
-            $_SESSION['error'] = 'Usuario o contraseña incorrectos.';
-            header('Location: /solaria/login');
+            header('Location: /Solaria/login/panelVendedor');
         }
+        if($usuario['rolName'] == 'Cliente'){
+            header('Location: /Solaria/cliente/mostrarPanelClientes');
+        }
+        exit;
+    } else {
+        session_start();
+        $_SESSION['error'] = 'Usuario o contraseña incorrectos.';
+        header('Location: /Solaria/login');
+        exit;
     }
+}
+
+
 
     public function panelAdmin() {
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'Admin') {

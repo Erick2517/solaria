@@ -34,21 +34,24 @@ if (!defined('BASE_URL')) {
             <label>Contraseña</label>
             <input type="password" name="pass" class="form-control" required>
         </div>
-        <button class="btn btn-primary w-100">Ingresar</button>
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
     </form>
 
     <p class="text-center mt-3">
         ¿No tienes cuenta?
-        <a href="<?php echo BASE_URL; ?>views/login/registro.php">Registrate Aquí</a></li>
+  
+        <a href="<?php echo BASE_URL; ?>login/registro">Registrate Aquí</a>
+
     </p>
 
+
     <?php
-    session_start();
-    if (isset($_SESSION['error'])) {
-        echo "<div class='alert alert-danger mt-3 text-center'>".$_SESSION['error']."</div>";
-        unset($_SESSION['error']);
-    }
-    ?>
+if (isset($_SESSION['error'])) {
+    echo "<div class='alert alert-danger mt-3 text-center'>".$_SESSION['error']."</div>";
+    unset($_SESSION['error']);
+}
+?>
+
 </div>
 </body>
 </html>

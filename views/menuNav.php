@@ -3,7 +3,9 @@
         <li><a href="<?php echo BASE_URL; ?>">Inicio</a></li>
         <li><a href="<?php echo BASE_URL; ?>marca/listarMarcas">Marcas</a></li>
         <li><a href="<?php echo BASE_URL; ?>views/categorias/panelCategorias.php">Categorias</a></li>
-        <li><a href="<?php echo BASE_URL; ?>views/login/login.php">Login</a></li>
+
+        <li><a href="<?php echo BASE_URL; ?>login">Login</a></li>
+
         
         <!--li><a href="<?php echo BASE_URL; ?>views/categorias/panelCategorias.php">Categorias</a></li-->
 
