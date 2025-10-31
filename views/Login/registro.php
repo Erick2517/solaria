@@ -1,8 +1,4 @@
-<?php
-require '../../models/LoginModel.php';
-$model = new LoginModel();
-$roles = $model->obtenerRoles();
-?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

@@ -13,9 +13,12 @@ class LoginController {
         require_once 'views/login/login.php';
     }
 
-    public function registro() {
-        require_once 'views/login/registro.php';
-    }
+
+public function registro() {
+    $roles = $this->model->obtenerRoles(); // obtener los roles desde el modelo
+    require_once 'views/login/registro.php';
+}
+
 public function validar() {
     $username = $_POST['username'];
     $pass = $_POST['pass'];
