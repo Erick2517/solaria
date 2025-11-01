@@ -17,6 +17,10 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
+ <!--        <link rel="stylesheet" href="../views/css/estilo.css"> ESTE NO VA A FUNCIONAR, DEBE USARSE CORRECTAMENTE LA BASE_URL-->
+<!-- <link rel="stylesheet" href="<?php echo rtrim(BASE_URL,'/'); ?>/views/css/estilo.css?v=2"> -->
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>views/css/estilo.css">
+
     </head>
 
     <body>
@@ -44,5 +48,6 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+        <script src="<?php echo BASE_URL; ?>views/js/script.js"></script>
     </body>
 </html>

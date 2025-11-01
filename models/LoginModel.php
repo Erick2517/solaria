@@ -5,22 +5,21 @@ class LoginModel {
     private $conn;
 
     public function __construct() {
-        // Asume que aquí defines la conexión de forma directa:
+        // conexión de forma directa, editarlo porque debe hacerse con heerencia
         $this->conn = new mysqli("localhost", "root", "", "solaria");
         
-        // ¡IMPORTANTE! Verifica si la conexión falló (si las credenciales son incorrectas)
         if ($this->conn->connect_error) {
             die("Error de conexión a la BD: " . $this->conn->connect_error);
         }
     }
 
     public function verificarUsuario($username) {
-        // Consulta segura usando prepared statements
-        $sql = "SELECT u.*, r.rolName
-                FROM usuarios u
-                INNER JOIN roles r ON u.rolId = r.rolId
-                WHERE u.username = ? 
-                LIMIT 1";
+        //usando prepared statements
+        $sql = "select u.*, r.rolName
+                from usuarios u
+                inner JOIN roles r ON u.rolId = r.rolId
+                where u.username = ? 
+                limit 1";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param('s', $username);

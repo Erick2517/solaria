@@ -15,7 +15,7 @@ class LoginController {
 
 
 public function registro() {
-    $roles = $this->model->obtenerRoles(); // obtener los roles desde el modelo
+    $roles = $this->model->obtenerRoles();
     require_once 'views/login/registro.php';
 }
 
@@ -26,13 +26,12 @@ public function validar() {
     $usuario = $this->model->verificarUsuario($username);
 
     if ($usuario && password_verify($pass, $usuario['pass'])) {
-        // Iniciar sesión
         session_start();
         $_SESSION['usuarioId'] = $usuario['usuarioId'];
         $_SESSION['username'] = $usuario['username'];
         $_SESSION['rol'] = $usuario['rolName'];
 
-        // Redirección según rol
+        //redireccionar según rol
         if ($usuario['rolName'] == 'Admin') {
             header('Location: /Solaria/login/panelAdmin');
         } else {
