@@ -31,13 +31,13 @@ public function validar() {
         $_SESSION['username'] = $usuario['username'];
         $_SESSION['rol'] = $usuario['rolName'];
 
-        //redireccionar según rol
+        /*redireccionar según rol
         if ($usuario['rolName'] == 'Admin') {
             header('Location: /Solaria/login/panelAdmin');
         } else {
             header('Location: /Solaria/login/panelVendedor');
-        }
-        if($usuario['rolName'] == 'Cliente'){
+        }*/
+        if($usuario['rolName'] == 'Cliente' || $usuario['rolName'] == 'Admin'){
             header('Location: /Solaria/cliente/mostrarPanelClientes');
         }
         exit;
