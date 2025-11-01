@@ -11,6 +11,6 @@
     <li><a href="<?php echo BASE_URL; ?>instalacion/panelInstalaciones">Instalaciones</a></li>
     <li><a href="<?php echo BASE_URL; ?>instalacion/mostrarMiInstalacion">Instal</a></li>
     <li><a href="<?php echo BASE_URL; ?>cliente/mostrarPanelClientes">Clientes</a></li>
-    <li><a href="<?php echo BASE_URL; ?>carrito/ver">car</a></li>
+    <li><a href="<?php echo BASE_URL; ?>envios/index">enviios</a></li>
   </ul>
 </nav>
