@@ -91,7 +91,9 @@ require_once('helpers/config.php');
             <img src="<?php echo BASE_URL . 'images/ver/panel.png'?>" alt="Logo" class="me-2 LogoMenu"> <span class="fs-5 fw-bold">Panel de solaria</span>
         </div>
         <div class="fs-5">
-            Admin
+             Bienvenido,
+            <?php echo $_SESSION['username']; ?>
+            
         </div>
     </header>
 

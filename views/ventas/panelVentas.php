@@ -23,6 +23,7 @@
             <th>Total ($)</th>
             <th>Fecha de Entrega</th>
             <th>Dirección</th>
+            <th>Estado de Pago</th>
             <th >Acciones</th>
             </tr>
     </thead>
@@ -37,9 +38,27 @@
             <td><?php echo $venta['total']; ?></td>
             <td><?php echo $venta['fechaEntregaEstimada']; ?></td>
             <td><?php echo $venta['direccionEntrega']; ?></td>
+            <td><?php  
+                    if(!isset($pagos[$venta['ventaId']])){ 
+                        echo "Pendiente";
+                    }else{
+                        echo "Pagado";
+                    }
+                ?>
+            </td>
             <td>
-                <a href="<?php echo BASE_URL; ?>ventas/editar/<?php echo $venta['ventaId']; ?>" class="btn btn-primary btn-sm">Editar</a>
-                <a href="<?php echo BASE_URL; ?>ventas/eliminar/<?php echo $venta['ventaId']; ?>" class="btn btn-danger btn-sm">Borrar</a>
+                <?php  
+                    if(!isset($pagos[$venta['ventaId']])){ 
+                ?>
+                    <a href="<?php echo BASE_URL; ?>ventas/pagar/<?php echo $venta['ventaId']; ?>" class="btn btn-warning btn-sm">Pagar</a>
+                    <a href="<?php echo BASE_URL; ?>ventas/editar/<?php echo $venta['ventaId']; ?>" class="btn btn-primary btn-sm">Editar</a>
+                <?php
+                    }else{
+                        $url = BASE_URL . "ventas/ver/" . $venta['ventaId'];
+                        echo "<a href='{$url}' class='btn btn-primary btn-sm'>Ver</a>";
+                    }
+                ?>
+                    
             </td>
         <?php endforeach; ?>
     </tbody>

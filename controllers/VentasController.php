@@ -6,20 +6,25 @@ require_once('models/VentaModel.php');
 require_once('helpers/config.php');
 require_once('models/ProductoModel2.php');
 require_once('models/ClienteModel.php');
+require_once('models/PagoModel.php');
 
 class VentasController {
     private $ventaModel;
     private $productoModel;
     private $clienteModel;
+    private $pagosModel;
 
 
     public function __construct() {
         $this->ventaModel = new VentaModel();
         $this->productoModel = new ProductoModel();
         $this->clienteModel = new ClienteModel();
+        $this->pagosModel = new PagoModel();
     }
 
     public function listarVentas() {
+        $dataPagos = $this->pagosModel->verPagos(); 
+        $pagos = array_column($dataPagos, null, 'ventaId'); //para buscar pago por id de venta
         $ventas = $this->ventaModel->verVentas();
         $dataClientes = $this->clienteModel->verClientes();
         $clientes = array_column($dataClientes, null, 'clienteId');//para burcar cliente por id
@@ -98,14 +103,53 @@ class VentasController {
         header("Location: " . BASE_URL . "ventas/listarVentas");
         exit();
     }
-    /*
-    public function verventa($id) {
+    public function pagar($id) {
         $venta = $this->ventaModel->obtenerVenta($id);
-        require_once(VIEWS_PATH.'ventas/verventa.php');
-        /*if ($marca) {
-            
+        $clientes = $this->clienteModel->verClientes();
+        $productos = $this->productoModel->verProductos();
+        if ($venta) {
+            require_once(VIEWS_PATH.'ventas/formPagarVenta.php');
         } else {
-            echo "Marca no encontrada.";
+            $_SESSION['mensaje_error'] = "Venta no encontrada.";
+            header("Location: " . BASE_URL . "ventas/listarVentas");
+            exit();
         }
-    }*/
+    }
+
+    public function verficarPago() {
+        // Obtener los datos enviados desde la solicitud fetch
+        $input = json_decode(file_get_contents('php://input'), true);
+        $orderID = $input['orderID'];
+        $ventaId = $input['ventaId'];
+        $clienteId = $input['clienteId'];
+        $monto = $input['monto'];
+
+        //verificar el pago si es necesario con paypal
+
+        // Registrar el pago en la base de datos
+        $resultado = $this->pagosModel->registrarPago($ventaId,$clienteId,$monto,date('Y-m-d H:i:s'),'Pagado');
+
+        if ($resultado) {
+            // Responder con éxito
+            $_SESSION['mensaje_exito'] = "Pago registrado exitosamente.";
+            echo json_encode(['status' => 'success']);
+        } else {
+            $_SESSION['mensaje_error'] = "Error al registrar el pago.";
+            // Responder con error
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function ver($id) {
+        $venta = $this->ventaModel->obtenerVenta($id);
+        $clientes = $this->clienteModel->verClientes();
+        $productos = $this->productoModel->verProductos();
+        if ($venta) {
+            require_once(VIEWS_PATH.'ventas/verVenta.php');
+        } else {
+            $_SESSION['mensaje_error'] = "Venta no encontrada.";
+            header("Location: " . BASE_URL . "ventas/listarVentas");
+            exit();
+        }
+    }
 }
