@@ -4,7 +4,7 @@
 
 require_once('models/VentaModel.php');
 require_once('helpers/config.php');
-require_once('models/ProductoModel.php');
+require_once('models/ProductoModel2.php');
 require_once('models/ClienteModel.php');
 
 class VentasController {
