@@ -1,5 +1,6 @@
 <?php
 // views/layout/header.php
+require_once('helpers/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -7,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $data['titulo'] ?? 'Solaria'; // Título dinámico ?></title>
-    
+    <link rel="icon" href="<?php echo BASE_URL . 'images/ver/favicon.ico' ?>" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
@@ -75,6 +76,11 @@
             color: #6c757d;
             font-size: 0.9em;
         }
+
+        .LogoMenu {
+            width: 45px;
+            height: 45px;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +88,7 @@
 <div class="content-wrapper">
     <header class="top-bar">
         <div class="d-flex align-items-center">
-            <img src="https://via.placeholder.com/40" alt="Logo" class="me-2"> <span class="fs-5 fw-bold">Panel de solaria</span>
+            <img src="<?php echo BASE_URL . 'images/ver/panel.png'?>" alt="Logo" class="me-2 LogoMenu"> <span class="fs-5 fw-bold">Panel de solaria</span>
         </div>
         <div class="fs-5">
             Admin
