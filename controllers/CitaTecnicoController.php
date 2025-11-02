@@ -10,7 +10,7 @@ class CitaTecnicoController {
 
     public function listar() {
         $relaciones = $this->model->listarCitasTecnicos();
-        include 'views/citastecnicos/lista.php';
+        include VIEWS_PATH.'citatecnicos/lista.php';
     }
 
     public function crear() {
@@ -26,7 +26,7 @@ class CitaTecnicoController {
             exit;
         }
 
-        include 'views/citastecnicos/formulario.php';
+        include VIEWS_PATH.'itastecnicos/formulario.php';
     }
 
     public function eliminar() {

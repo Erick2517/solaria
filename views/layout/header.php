@@ -91,8 +91,13 @@ require_once('helpers/config.php');
             <img src="<?php echo BASE_URL . 'images/ver/panel.png'?>" alt="Logo" class="me-2 LogoMenu"> <span class="fs-5 fw-bold">Panel de solaria</span>
         </div>
         <div class="fs-5">
-             Bienvenido,
-            <?php echo $_SESSION['username']; ?>
+             Bienvenido
+            
+
+            <?php if (isset($_SESSION["username"])) { ?>
+                <?php echo $_SESSION['username']; ?>
+                <a href="<?php echo BASE_URL. 'login/logout' ?>" class="btn btn-secondary">Cerrar sesión</a>
+            <?php } ?>
             
         </div>
     </header>

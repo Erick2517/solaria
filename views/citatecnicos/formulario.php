@@ -1,4 +1,4 @@
-<?php include 'views/header.php'; ?>
+<?php include VIEWS_PATH.'layout/header.php'; ?>
 
 <div class="container mt-5">
     <h2>Asignar Técnico a Cita</h2>

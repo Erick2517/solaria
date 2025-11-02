@@ -1,4 +1,4 @@
-<?php include 'views/header.php'; ?>
+<?php require_once(VIEWS_PATH . "layout/header.php"); ?>
 
 <div class="container mt-5">
     <h2>Relaciones Citas y Técnicos</h2>
@@ -38,4 +38,4 @@
     </table>
 </div>
 
-<?php include 'views/footer.php'; ?>
+<?php require_once(VIEWS_PATH . "layout/footer.php"); ?>
