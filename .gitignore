@@ -1,6 +1,5 @@
 
 # Archivos de configuración del entorno
-.env
 .env.local
 
 # Archivos de logs
