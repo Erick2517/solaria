@@ -3,77 +3,54 @@ require_once('conexion.php');
 
 class CitaTecnicoModel extends Conexion {
     private $conexion;
-    private $table = 'citastecnicos';
+    private $tabla = 'citastecnicos';
 
     public function __construct() {
         parent::__construct();
         $this->conexion = $this->getConexion();
     }
 
-    // ✅ Ver todos los registros de citastecnicos
-    public function verCitasTecnicos(){
+    // ✅ Ver todas las relaciones Cita - Técnico
+    public function listarCitasTecnicos() {
         try {
-            $sql = "SELECT * FROM {$this->table}";
+            $sql = "SELECT 
+                        ct.citaTecnicoId,
+                        c.citaId, c.descripcion, c.fechaAcordadaCita, c.fechaRegistro,
+                        t.tecnicoId, t.especialidad, t.nivelCategoria,
+                        CONCAT('Técnico ', t.tecnicoId) AS tecnicoNombre
+                    FROM {$this->tabla} ct
+                    INNER JOIN tecnicos t ON ct.tecnicoId = t.tecnicoId
+                    INNER JOIN citas c ON ct.citaId = c.citaId
+                    ORDER BY c.fechaAcordadaCita DESC";
             $cmd = $this->conexion->prepare($sql);
             $cmd->execute();
             return $cmd->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            echo "Error al obtener las relaciones cita-técnico: " . $e->getMessage();
+            echo "Error al listar Citas-Técnicos: " . $e->getMessage();
             return [];
         }
     }
 
-    // ✅ Ver por ID (citaTecnicoId)
-    public function verCitaTecnico($id){
+    // ✅ Crear nueva relación
+    public function crearRelacion($tecnicoId, $citaId) {
         try {
-            $sql = "SELECT * FROM {$this->table} WHERE citaTecnicoId = :id";
+            $sql = "INSERT INTO {$this->tabla} (tecnicoId, citaId) VALUES (:tecnicoId, :citaId)";
+            $cmd = $this->conexion->prepare($sql);
+            $cmd->bindParam(':tecnicoId', $tecnicoId);
+            $cmd->bindParam(':citaId', $citaId);
+            return $cmd->execute();
+        } catch (Exception $e) {
+            echo "Error al crear relación: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    // ✅ Eliminar relación
+    public function eliminarRelacion($id) {
+        try {
+            $sql = "DELETE FROM {$this->tabla} WHERE citaTecnicoId = :id";
             $cmd = $this->conexion->prepare($sql);
             $cmd->bindParam(':id', $id, PDO::PARAM_INT);
-            $cmd->execute();
-            return $cmd->fetch(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            echo "Error al obtener la relación: " . $e->getMessage();
-            return null;
-        }
-    }
-
-    // 🟢 Crear nueva relación cita - técnico
-    public function crearCitaTecnico($tecnicoId, $citaId){
-        try {
-            $sql = "INSERT INTO {$this->table} (tecnicoId, citaId) VALUES (:tecnicoId, :citaId)";
-            $cmd = $this->conexion->prepare($sql);
-            $cmd->bindParam(':tecnicoId', $tecnicoId);
-            $cmd->bindParam(':citaId', $citaId);
-            return $cmd->execute();
-        } catch (Exception $e) {
-            echo "Error al asignar técnico a cita: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    // 🟡 Actualizar relación
-    public function actualizarCitaTecnico($citaTecnicoId, $tecnicoId, $citaId){
-        try {
-            $sql = "UPDATE {$this->table}
-                    SET tecnicoId = :tecnicoId, citaId = :citaId
-                    WHERE citaTecnicoId = :id";
-            $cmd = $this->conexion->prepare($sql);
-            $cmd->bindParam(':tecnicoId', $tecnicoId);
-            $cmd->bindParam(':citaId', $citaId);
-            $cmd->bindParam(':id', $citaTecnicoId, PDO::PARAM_INT);
-            return $cmd->execute();
-        } catch (Exception $e) {
-            echo "Error al actualizar relación: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    // 🔴 Eliminar relación
-    public function eliminarCitaTecnico($citaTecnicoId){
-        try {
-            $sql = "DELETE FROM {$this->table} WHERE citaTecnicoId = :id";
-            $cmd = $this->conexion->prepare($sql);
-            $cmd->bindParam(':id', $citaTecnicoId, PDO::PARAM_INT);
             return $cmd->execute();
         } catch (Exception $e) {
             echo "Error al eliminar relación: " . $e->getMessage();
@@ -81,34 +58,28 @@ class CitaTecnicoModel extends Conexion {
         }
     }
 
-    // 📌 Extra: Ver técnicos asignados a una cita específica
-    public function verTecnicosPorCita($citaId){
+    // 📋 Obtener lista de técnicos para el formulario
+    public function listarTecnicos() {
         try {
-            $sql = "SELECT t.* FROM tecnicos t
-                    INNER JOIN {$this->table} ct ON t.tecnicoId = ct.tecnicoId
-                    WHERE ct.citaId = :citaId";
+            $sql = "SELECT tecnicoId, especialidad, nivelCategoria FROM tecnicos ORDER BY tecnicoId ASC";
             $cmd = $this->conexion->prepare($sql);
-            $cmd->bindParam(':citaId', $citaId, PDO::PARAM_INT);
             $cmd->execute();
             return $cmd->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            echo "Error al obtener técnicos de la cita: " . $e->getMessage();
+            echo "Error al obtener técnicos: " . $e->getMessage();
             return [];
         }
     }
 
-    // 📌 Extra: Ver citas asignadas a un técnico específico
-    public function verCitasPorTecnico($tecnicoId){
+    // 📋 Obtener lista de citas para el formulario
+    public function listarCitas() {
         try {
-            $sql = "SELECT c.* FROM citas c
-                    INNER JOIN {$this->table} ct ON c.citaId = ct.citaId
-                    WHERE ct.tecnicoId = :tecnicoId";
+            $sql = "SELECT citaId, descripcion, fechaAcordadaCita FROM citas ORDER BY fechaAcordadaCita DESC";
             $cmd = $this->conexion->prepare($sql);
-            $cmd->bindParam(':tecnicoId', $tecnicoId, PDO::PARAM_INT);
             $cmd->execute();
             return $cmd->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            echo "Error al obtener citas del técnico: " . $e->getMessage();
+            echo "Error al obtener citas: " . $e->getMessage();
             return [];
         }
     }
