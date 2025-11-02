@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . '/EnvLoader.php');
 require_once __DIR__ . '/../helpers/EnvLoader.php';
 EnvLoader::load(__DIR__ . '/../.env');
 
-define('BASE_URL', EnvLoader::get('BASE_URL', 'http://localhost/Solaria2/'));
+define('BASE_URL', EnvLoader::get('BASE_URL', 'http://localhost/Solaria/'));
 define('VIEWS_PATH', dirname(__FILE__) . '/../views/');
 
 
