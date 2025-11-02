@@ -80,9 +80,7 @@
                     <div class="mb-3 col-md-3">
                         <label for="cantidad" class="form-label">Total:</label>
                         <?php 
-                            $productosPorID = array_column($productos, null, 'productoId');
-                            $productoVenta = $productosPorID[$venta['detalle'][0]['productoId']];
-                            $total = $venta['detalle'][0]['cantidad'] * $productoVenta['precioUnitario']; 
+                            $total = $venta['total']; 
                         ?>
                         <input type="number" class="form-control" id="cantidad" name="cantidad" required value="<?= $total; ?>" min ="1" disabled>
                     </div>

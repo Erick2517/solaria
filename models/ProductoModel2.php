@@ -22,4 +22,16 @@ class ProductoModel extends Conexion {
             
         }
     }
+
+    public function obtenerProductoPorId($productoId) {
+        try {
+            $sql = "SELECT * FROM {$this->table} WHERE productoId = ?";
+            $cmd = $this->conexion->prepare($sql);
+            $cmd->execute([$productoId]);
+            return $cmd->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Error al obtener el producto: " . $e->getMessage();
+            return null;
+        }
+    }
 }

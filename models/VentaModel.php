@@ -24,21 +24,21 @@ class VentaModel extends Conexion {
         }
     }
 
-    public function crearVenta($clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $productoId, $cantidad){
+    public function crearVenta($clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $productoId, $cantidad, $total){
         try{
             $this->conexion->beginTransaction();
 
             $sqlVenta = "INSERT INTO {$this->table} (clienteId, fechaVenta, direccionEntrega, fechaEntregaEstimada, total) 
-                          VALUES (?,?,?,?,0)";
+                          VALUES (?,?,?,?,?)";
             $cmdVenta = $this->conexion->prepare($sqlVenta);
-            $cmdVenta->execute([$clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada]);
+            $cmdVenta->execute([$clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $total]);
 
             $ventaId = $this->conexion->lastInsertId();
 
             $sqlDetalle = "INSERT INTO {$this->tablaDetalle} (ventaId, productoId, cantidad, subtotal) 
-                           VALUES (?,?,?,0)";
+                           VALUES (?,?,?,?)";
             $cmdDetalle = $this->conexion->prepare($sqlDetalle);
-            $cmdDetalle->execute([$ventaId, $productoId, $cantidad]);
+            $cmdDetalle->execute([$ventaId, $productoId, $cantidad, $total]);
 
             $this->conexion->commit();
             return true;
@@ -78,21 +78,21 @@ class VentaModel extends Conexion {
         }
     }
 
-    public function actualizarVenta($ventaId, $clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $productoId, $cantidad){
+    public function actualizarVenta($ventaId, $clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $productoId, $cantidad, $total) {
         try{
             $this->conexion->beginTransaction();
 
             $sqlVenta = "UPDATE {$this->table} 
-                          SET clienteId = ?, fechaVenta = ?, direccionEntrega = ?, fechaEntregaEstimada = ? 
+                          SET clienteId = ?, fechaVenta = ?, direccionEntrega = ?, fechaEntregaEstimada = ?, total = ?
                           WHERE ventaId = ?";
             $cmdVenta = $this->conexion->prepare($sqlVenta);
-            $cmdVenta->execute([$clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $ventaId]);
+            $cmdVenta->execute([$clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $total,$ventaId]);
 
             $sqlDetalle = "UPDATE {$this->tablaDetalle} 
-                           SET productoId = ?, cantidad = ? 
+                           SET productoId = ?, cantidad = ?, subtotal = ?
                            WHERE ventaId = ?";
             $cmdDetalle = $this->conexion->prepare($sqlDetalle);
-            $cmdDetalle->execute([$productoId, $cantidad, $ventaId]);
+            $cmdDetalle->execute([$productoId, $cantidad, $total, $ventaId]);
 
             $this->conexion->commit();
             return true;

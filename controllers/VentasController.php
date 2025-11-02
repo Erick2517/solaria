@@ -48,7 +48,11 @@ class VentasController {
 
             //aqui deberia consultar el precio del producto y calcular el total
 
-            $resultado = $this->ventaModel->crearVenta($clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $productoId, $cantidad);
+            $prod = $this->productoModel->obtenerProductoPorId($productoId);
+
+            $total = $prod['precioUnitario'] * $cantidad;
+
+            $resultado = $this->ventaModel->crearVenta($clienteId, $fechaVenta, $direccionEntrega, $fechaEntregaEstimada, $productoId, $cantidad, $total);
 
             if ($resultado) {
                 $_SESSION['mensaje_exito'] = "Venta creada exitosamente.";
@@ -79,7 +83,11 @@ class VentasController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             extract($_POST);
 
-            $resultado = $this->ventaModel->actualizarVenta($ventaId, $clienteId, $fechaVenta, $direccionEntrega, $fechaEstimada, $productoId, $cantidad);
+            $prod = $this->productoModel->obtenerProductoPorId($productoId);
+
+            $total = $prod['precioUnitario'] * $cantidad;
+
+            $resultado = $this->ventaModel->actualizarVenta($ventaId, $clienteId, $fechaVenta, $direccionEntrega, $fechaEstimada, $productoId, $cantidad, $total);
 
             if ($resultado) {
                 $_SESSION['mensaje_exito'] = "Venta actualizada exitosamente.";
