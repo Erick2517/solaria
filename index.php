@@ -9,6 +9,8 @@ EnvLoader::load(__DIR__ . '/.env');
 
 require_once(__DIR__ . '/helpers/config.php');
 
+session_start();
+
 // ==================== Router ====================
 $url = isset($_GET['url']) ? explode('/', $_GET['url']) : [];
 
@@ -41,5 +43,6 @@ if (file_exists($controllerFile)) {
 } else {
     echo "Controlador '$controllerName' no encontrado.";
 }
+
 
 exit();

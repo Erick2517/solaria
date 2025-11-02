@@ -6,7 +6,9 @@ class LoginController {
 
     public function __construct() {
         $this->model = new LoginModel();
-        session_start();
+        if (session_status() == PHP_SESSION_NONE){
+            session_start();
+        }
     }
 
     public function index() {
@@ -26,7 +28,9 @@ public function validar() {
     $usuario = $this->model->verificarUsuario($username);
 
     if ($usuario && password_verify($pass, $usuario['pass'])) {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE){
+            session_start();
+        }
         $_SESSION['usuarioId'] = $usuario['usuarioId'];
         $_SESSION['username'] = $usuario['username'];
         $_SESSION['rol'] = $usuario['rolName'];
@@ -42,7 +46,9 @@ public function validar() {
         }
         exit;
     } else {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE){
+            session_start();
+        }
         $_SESSION['error'] = 'Usuario o contraseña incorrectos.';
         header('Location: /Solaria/login');
         exit;
