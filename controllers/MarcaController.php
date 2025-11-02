@@ -1,29 +1,44 @@
 <?php
-//autor: 
-//fecha: 12/10/2025
-//descripcion: Controlador para manejar las marcas
+require_once __DIR__ . '/../models/MarcaModel.php';
 
-require_once('models/MarcaModel.php');
-require_once('helpers/config.php');
 class MarcaController {
-    private $marcaModel;
+    private $model;
 
     public function __construct() {
-        $this->marcaModel = new MarcaModel();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        $this->model = new MarcaModel();
     }
 
-    public function listarMarcas() {
-        $marcas = $this->marcaModel->verMarcas();
-        require_once(VIEWS_PATH.'marcas/panelMarcas.php');
-    }
-
-    public function verMarca($id) {
-        $marca = $this->marcaModel->obtenerMarca($id);
-        require_once(VIEWS_PATH.'marcas/verMarca.php');
-        /*if ($marca) {
-            
-        } else {
-            echo "Marca no encontrada.";
-        }*/
-    }
+    // GET /marca  (o /marca/listarMarcas)
+    public function index() {          // /marca  o /marca/listarMarcas
+    $marcas = $this->model->verMarcas();
+    require_once VIEWS_PATH . 'marcas/panelMarcas.php';
 }
+public function listarMarcas() { $this->index(); }
+
+public function nuevo() {          // /marca/nuevo
+    require_once VIEWS_PATH . 'marcas/formNuevaMarca.php';
+}
+
+public function guardar() {        // POST /marca/guardar
+    $nombre = trim($_POST['nombreMarca'] ?? '');
+    $_SESSION['mensaje'] = $this->model->insertar($nombre)
+        ? 'Marca creada correctamente.' : 'Error al crear marca.';
+    header('Location: ' . BASE_URL . 'marca');
+}
+
+public function editar($id) {      // /marca/editar/{id}
+    $marca = $this->model->obtenerPorId((int)$id);
+    require_once VIEWS_PATH . 'marcas/formEditarMarca.php';
+}
+
+public function actualizar() {     // POST /marca/actualizar
+    $id = (int)($_POST['marcaId'] ?? 0);
+    $nombre = trim($_POST['nombreMarca'] ?? '');
+    $_SESSION['mensaje'] = $this->model->actualizar($id, $nombre)
+        ? 'Marca actualizada.' : 'Error al actualizar.';
+    header('Location: ' . BASE_URL . 'marca');
+}
+}
+// ultimo cambio 12:29
+

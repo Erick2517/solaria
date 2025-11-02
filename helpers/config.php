@@ -8,20 +8,6 @@ define('VIEWS_PATH', dirname(__FILE__) . '/../views/');
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Función para redireccionar.
  * ayuda a formar una URL completa usando la BASE_URL y redirige
@@ -36,5 +22,8 @@ function redirect($url) {
     // exit después de un header de redirección
     // para detener la ejecución del script actual.
     exit();
+    require_once(VIEWS_PATH . 'productos/formNuevoProducto.php');
+    
+
 }
 ?>

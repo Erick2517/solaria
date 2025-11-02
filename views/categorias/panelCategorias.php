@@ -1,59 +1,41 @@
-<?php require_once dirname(__FILE__) . '/../../helpers/config.php'; ?>
-<!doctype html>
-<html lang="es-SV">
-    <head>
-        <title>Panel Categor&iacute;as | Solaria</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+<?php require_once dirname(__FILE__).'/../layout/header.php'; ?>
 
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-    </head>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Categorías</h2>
+  <a class="btn btn-success" href="<?= BASE_URL ?>categoria/nuevo">Nuevo</a>
+</div>
 
-    <body>
-        <header>
-            <?php include '../menuNav.php'; ?>
-        </header>
-        <main class="container mt-4">
-            <h1>esta es una lista de Categorías</h1>
-            <ul>
-            <?php 
-            if(isset($categorias) && is_array($categorias)) {
-                foreach($categorias as $cat) {
-                    echo "<li>" . htmlspecialchars($cat['nombreCat']) . "</li>";
-                }
-            } else {
-                echo "<li>No hay categorias disponibles.</li>";
-            }
-            ?>
-            </ul>
-        </main>
-        <footer>
-            <footer class="footer">
-                <p>&copy; 2025 Solaria. Todos los derechos reservados.</p>
-                <p>Contacto: info@solaria.com</p>
-            </footer>
-        </footer>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
+<?php if (!empty($_SESSION['mensaje'])): ?>
+  <div class="alert alert-info"><?= $_SESSION['mensaje']; unset($_SESSION['mensaje']); ?></div>
+<?php endif; ?>
 
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-    </body>
-</html>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (empty($categorias)): ?>
+          <tr><td colspan="4" class="text-center">No hay categorías</td></tr>
+        <?php else: foreach ($categorias as $c): ?>
+          <tr>
+            <td><?= $c['categoriaId'] ?></td>
+            <td><?= htmlspecialchars($c['nombreCat']) ?></td>
+            <td><?= htmlspecialchars($c['descripcion']) ?></td>
+            <td><a class="btn btn-sm btn-outline-primary" href="<?= BASE_URL ?>categoria/editar/<?= $c['categoriaId'] ?>">Editar</a></td>
+          </tr>
+        <?php endforeach; endif; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<?php require_once dirname(__FILE__).'/../layout/footer.php'; ?>
+
+// ultimo cambio 10:34

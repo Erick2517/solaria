@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../helpers/EnvLoader.php';
 EnvLoader::load(__DIR__ . '/../.env');
 
+
 class Conexion 
 {
     private $host;
@@ -29,7 +30,6 @@ class Conexion
         }catch(Exception $e){
             echo "Error al cargar la conexion: " . $e->getMessage();
         }
-        
     }
 
     public function getConexion() {
