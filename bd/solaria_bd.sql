@@ -168,6 +168,8 @@ CREATE TABLE `pagos` (
 CREATE TABLE `productos` (
   `productoId` int(11) NOT NULL,
   `categoriaId` int(11) NOT NULL,
+  `nombre_producto` varchar(50) NOT NULL,
+  `desc_producto` varchar(100) NOT NULL,
   `marcaId` int(11) NOT NULL,
   `precioUnitario` decimal(10,0) NOT NULL,
   `tiempoGarantia` varchar(30) DEFAULT NULL,
