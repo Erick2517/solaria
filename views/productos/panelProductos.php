@@ -24,8 +24,8 @@
         <?php foreach ($productos as $p): ?>
             <tr>
                 <td><?= htmlspecialchars($p['productoId']) ?></td>
-                <td><?= htmlspecialchars($p['nombreProducto'] ?? '') ?></td>
-                <td><?= htmlspecialchars($p['descripcion'] ?? '') ?></td>
+                <td><?= htmlspecialchars($p['nombre_producto'] ?? '') ?></td>
+                <td><?= htmlspecialchars($p['desc_producto'] ?? '') ?></td>
                 <td><?= htmlspecialchars($p['categoria']) ?></td>
                 <td><?= htmlspecialchars($p['marca']) ?></td>
                 <td><?= number_format((float)$p['precio'], 2) ?></td>

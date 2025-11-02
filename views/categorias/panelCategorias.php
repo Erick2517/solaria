@@ -17,7 +17,6 @@
           <th>ID</th>
           <th>Nombre</th>
           <th>Descripción</th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +27,7 @@
             <td><?= $c['categoriaId'] ?></td>
             <td><?= htmlspecialchars($c['nombreCat']) ?></td>
             <td><?= htmlspecialchars($c['descripcion']) ?></td>
-            <td><a class="btn btn-sm btn-outline-primary" href="<?= BASE_URL ?>categoria/editar/<?= $c['categoriaId'] ?>">Editar</a></td>
+            
           </tr>
         <?php endforeach; endif; ?>
       </tbody>

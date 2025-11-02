@@ -23,7 +23,6 @@
       <p>Este sistema está diseñado para abastecer la energía de una casa familiar de 3 a 5 personas. Su rendimiento es óptimo en zonas soleadas y se puede complementar con baterías.</p>
 
       <a href="<?php echo BASE_URL; ?>" class="btn btn-outline-secondary">Volver al inicio</a>
-      <a href="#" class="btn btn-success">Solicitar instalación</a>
     </div>
   </div>
 </div>

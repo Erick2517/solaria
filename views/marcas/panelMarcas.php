@@ -16,7 +16,6 @@
         <tr>
           <th style="width:80px">ID</th>
           <th>Marca</th>
-          <th style="width:110px"></th>
         </tr>
       </thead>
       <tbody>
@@ -27,12 +26,6 @@
             <tr>
               <td><?= (int)$m['marcaId'] ?></td>
               <td><?= htmlspecialchars($m['nombreMarca']) ?></td>
-              <td>
-                <a class="btn btn-sm btn-outline-primary"
-                   href="<?= BASE_URL ?>marca/editar/<?= (int)$m['marcaId'] ?>">
-                  Editar
-                </a>
-              </td>
             </tr>
           <?php endforeach; ?>
         <?php endif; ?>
