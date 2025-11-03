@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-11-2025 a las 17:15:28
+-- Tiempo de generación: 03-11-2025 a las 01:05:01
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -20,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `solaria`
 --
-CREATE DATABASE IF NOT EXISTS `solaria` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `solaria`;
 
 -- --------------------------------------------------------
 
@@ -34,6 +33,15 @@ CREATE TABLE `categorias` (
   `nombreCat` varchar(30) NOT NULL,
   `descripcion` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`categoriaId`, `nombreCat`, `descripcion`) VALUES
+(1, 'Categoria 1', NULL),
+(2, 'Categoria 2', NULL),
+(3, 'Categoria desde Form', 'descripcion desde form');
 
 -- --------------------------------------------------------
 
@@ -74,6 +82,14 @@ CREATE TABLE `clientes` (
   `presupuestoDisp` decimal(8,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`clienteId`, `usuarioId`, `numDocumentoId`, `presupuestoDisp`) VALUES
+(1, 3, '053628', 1000.00),
+(2, 1, '12345678', 1000.00);
+
 -- --------------------------------------------------------
 
 --
@@ -88,6 +104,16 @@ CREATE TABLE `detallesventas` (
   `cantidad` int(11) NOT NULL,
   `subtotal` float(8,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detallesventas`
+--
+
+INSERT INTO `detallesventas` (`ventaDetallesId`, `ventaId`, `productoId`, `precioUnit`, `cantidad`, `subtotal`) VALUES
+(1, 3, 1, 50.00, 1, 50.00),
+(2, 4, 2, NULL, 1, 100.00),
+(3, 5, 1, NULL, 1, 50.00),
+(4, 6, 3, NULL, 1, 13.00);
 
 -- --------------------------------------------------------
 
@@ -144,6 +170,15 @@ CREATE TABLE `marcas` (
   `nombreMarca` char(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `marcas`
+--
+
+INSERT INTO `marcas` (`marcaId`, `nombreMarca`) VALUES
+(1, 'Marca 1'),
+(2, 'Marca 2'),
+(3, 'Marca desde Form');
+
 -- --------------------------------------------------------
 
 --
@@ -158,6 +193,16 @@ CREATE TABLE `pagos` (
   `fechaPago` datetime NOT NULL,
   `estadoPago` char(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`pagoId`, `ventaId`, `clienteId`, `montoPago`, `fechaPago`, `estadoPago`) VALUES
+(13, 3, 1, 50.00, '2025-11-02 20:48:11', 'Pagado'),
+(14, 4, 1, 100.00, '2025-11-02 21:45:47', 'Pagado'),
+(15, 5, 1, 50.00, '2025-11-02 23:49:29', 'Pagado'),
+(16, 6, 1, 13.00, '2025-11-03 00:08:44', 'Pagado');
 
 -- --------------------------------------------------------
 
@@ -176,6 +221,15 @@ CREATE TABLE `productos` (
   `fechaFab` date DEFAULT NULL,
   `existente` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`productoId`, `categoriaId`, `nombre_producto`, `desc_producto`, `marcaId`, `precioUnitario`, `tiempoGarantia`, `fechaFab`, `existente`) VALUES
+(1, 1, 'producto 1', 'descripcion del producto 1', 1, 50, '1 año', '2015-11-25', 1),
+(2, 2, 'producto 1234', 'descripcion nueva', 1, 100, 'n/a', '2023-11-08', 1),
+(3, 1, 'Producto agregado nuevo', 'Descripcion nueva del producto', 2, 13, '1', '2025-11-13', 1);
 
 -- --------------------------------------------------------
 
@@ -201,6 +255,14 @@ CREATE TABLE `roles` (
   `rolName` char(15) NOT NULL,
   `rolDesc` char(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`rolId`, `rolName`, `rolDesc`) VALUES
+(1, 'Admin', 'Administrador del sitio'),
+(2, 'Cliente', 'Cliente visitante del sitio');
 
 -- --------------------------------------------------------
 
@@ -234,6 +296,18 @@ CREATE TABLE `usuarios` (
   `telefonoContacto` char(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`usuarioId`, `rolId`, `username`, `nombres`, `apellidos`, `pass`, `email`, `telefonoContacto`) VALUES
+(1, 1, 'Admin', 'usuario', 'nuevo', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin@admin.com', NULL),
+(2, 1, 'Erick', NULL, NULL, '$2y$10$.Fi9aAr2dxlWfRC/aNuJeeifPbJUe7bf65YJVecvA6uAW/.E4VXR6', 'erick@correo.com', '73258695'),
+(3, 1, 'Erick2', 'erick manuel', 'alas', '$2y$10$ezbK4Rmw0vGmLvt7f8DpHOFrRz4Fc2TKvbtM.fx1TZE4ic/E/T8eu', 'erick@mail.com', '12345678'),
+(4, 2, 'cliente', NULL, NULL, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '123@123.com', '123456789'),
+(5, 1, 'admin2', NULL, NULL, '$2y$10$bPOvld1VzC1TplrPKtYpVOwfoktHKED.ziNEa6OjI4JHzj2mMajrO', 'admin@admin.com', 'admin'),
+(6, 1, 'admin3', NULL, NULL, '$2y$10$mQ1hcKvxoJmhYJG2ZGnZjurEwyQlqntPe/Gi8U5kjj4Jp/1nv9JgW', 'ericklandaverde15@gmail.c', '6026-5477');
+
 -- --------------------------------------------------------
 
 --
@@ -249,6 +323,16 @@ CREATE TABLE `ventas` (
   `fechaEnvio` date DEFAULT NULL,
   `total` float(8,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`ventaId`, `clienteId`, `direccionEntrega`, `fechaVenta`, `fechaEntregaEstimada`, `fechaEnvio`, `total`) VALUES
+(3, 1, 'editada', '2025-11-01', '2025-12-03', NULL, 50.00),
+(4, 1, 'direccion nueva', '2025-10-02', '2025-11-04', NULL, 100.00),
+(5, 1, 'asdadadafsdfsfds', '2024-10-12', '2025-12-12', NULL, 50.00),
+(6, 1, 'sdfsf', '2025-11-01', '2025-11-03', NULL, 13.00);
 
 --
 -- Índices para tablas volcadas
@@ -376,7 +460,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `categoriaId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `categoriaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
@@ -394,13 +478,13 @@ ALTER TABLE `citastecnicos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `clienteId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `clienteId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detallesventas`
 --
 ALTER TABLE `detallesventas`
-  MODIFY `ventaDetallesId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ventaDetallesId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `envios`
@@ -424,19 +508,19 @@ ALTER TABLE `instalacionestecnicos`
 -- AUTO_INCREMENT de la tabla `marcas`
 --
 ALTER TABLE `marcas`
-  MODIFY `marcaId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `marcaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `pagoId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pagoId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `productoId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `productoId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `repartidores`
@@ -448,7 +532,7 @@ ALTER TABLE `repartidores`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `rolId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `rolId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tecnicos`
@@ -460,13 +544,13 @@ ALTER TABLE `tecnicos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `usuarioId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `usuarioId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `ventaId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ventaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
@@ -549,11 +633,9 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `ventas`
   ADD CONSTRAINT `fk_clientes_ventas` FOREIGN KEY (`clienteId`) REFERENCES `clientes` (`clienteId`) ON DELETE NO ACTION ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-INSERT INTO `roles` (`rolId`, `rolName`, `rolDesc`) VALUES (NULL, 'Admin', 'Administrador del sitio'), (NULL, 'Cliente', 'Cliente visitante del sitio');
---INSERT INTO `usuarios` (`usuarioId`, `rolId`, `username`, `nombres`, `apellidos`, `pass`, `email`, `telefonoContacto`) VALUES (NULL, '1', 'Admin', 'Admin', 'Admin', sha2('admin',256), 'admin@admin.com', NULL);
